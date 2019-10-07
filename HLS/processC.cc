@@ -5,8 +5,8 @@ void processC(ap_uint<2> bx, ap_uint<2>& bx_o,
 {
 #pragma HLS inline off
 #pragma HLS interface register port=bx_o
-//#pragma HLS resource variable=inmem1 latency=2
-//#pragma HLS resource variable=inmem2 latency=2
+#pragma HLS resource variable=inmem1 latency=2
+#pragma HLS resource variable=inmem2 latency=2
 
   for (int i = 0; i < 16; ++i) {
 #pragma HLS pipeline II=1 rewind
