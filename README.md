@@ -2,6 +2,28 @@
 
 Toy hls/vivado project with similar structure to real hybrid
 
+### What the algorithm does
+
+The algorithm is structured as follows
+
+![alt text](ToyProjectDiagram.PNG "Diagram of toy project")
+
+# Here is a description of the memories
+
+* InputMem1/InputMem2: Arrays of 32-bit integers. The arrays are 2 pages, each page having 16 entries. They are populated with numbers from a coefficients or text file before the algorithm starts.
+
+* memoryAB/memoryBC: Arrays of 32-bit integers. The arrays are 2 pages, each page having 16 entries. They are populated processA and processB, respectively
+
+* memoryAC: Array of 32-bit integers. This array is 4 pages, rather than 2, because it bypasses processB. It also has 16 integers per page. It is populated by processA
+
+# Here is what each processing block does
+
+* ProcessA: Reads, from the top of the page to the bottom, the integers from InputMem1 and writes them to memoryAB. Also reads from InputMem2, doubles the number, then writes it to memoryAC.
+
+* ProcessB: Reads, from the top of the page to the bottom, the integers from memoryAB, doubles them, and writes them to memoryBC.
+
+* ProcessC: Reads, from the top of the page to the bottom, the integers from memoryAC and memoryBC, and writes the larger of the two to Outputmem.
+
 ### To checkout and build the project, and open it for the first time
 
 Do the following (this could be automated someday, or at least put into a bash script)
