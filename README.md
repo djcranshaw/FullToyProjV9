@@ -6,7 +6,7 @@ Toy hls/vivado project with similar structure to real hybrid
 
 The algorithm is structured as follows
 
-<img src="ToyProjectDiagram.PNG" width=100>
+<img src="ToyProjectDiagram.PNG" width=300>
 
 #### Here is a description of the memories
 
