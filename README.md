@@ -6,9 +6,9 @@ Toy hls/vivado project with similar structure to real hybrid
 
 The algorithm is structured as follows
 
-![alt text](ToyProjectDiagram.PNG "Diagram of toy project")
+![alt text](ToyProjectDiagram.PNG | width=100)
 
-# Here is a description of the memories
+#### Here is a description of the memories
 
 * InputMem1/InputMem2: Arrays of 32-bit integers. The arrays are 2 pages, each page having 16 entries. They are populated with numbers from a coefficients or text file before the algorithm starts.
 
@@ -16,7 +16,7 @@ The algorithm is structured as follows
 
 * memoryAC: Array of 32-bit integers. This array is 4 pages, rather than 2, because it bypasses processB. It also has 16 integers per page. It is populated by processA
 
-# Here is what each processing block does
+#### Here is what each processing block does
 
 * ProcessA: Reads, from the top of the page to the bottom, the integers from InputMem1 and writes them to memoryAB. Also reads from InputMem2, doubles the number, then writes it to memoryAC.
 
@@ -78,7 +78,7 @@ Once the project is opened, vivado will realize that the HLS ip you've changed i
 * Select "Continue with Core Container Disabled"
 * If needed, click "Generate"
 
-## To generate a new .tcl file after making changes to the project
+### To generate a new .tcl file after making changes to the project
 
 * File -> Project -> Write tcl...
 * Uncheck everything, including "copy sources to new project"
