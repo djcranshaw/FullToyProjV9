@@ -6,7 +6,7 @@ Toy hls/vivado project with similar structure to real hybrid
 
 The algorithm is structured as follows
 
-![alt text](ToyProjectDiagram.PNG | width=100)
+<img src="ToyProjectDiagram.PNG" width=100>
 
 #### Here is a description of the memories
 
@@ -27,6 +27,7 @@ The algorithm is structured as follows
 ### To checkout and build the project, and open it for the first time
 
 Do the following (this could be automated someday, or at least put into a bash script)
+
 N.B. This will open the vivado GUI
 
 * git clone https://github.com/djcranshaw/FullToyProjV9
@@ -62,7 +63,11 @@ The HLS blocks that make up the toy project live in the HLS directory. To change
 * cd FullToyProjV9/HLS
 * vivado_hls -f script_A.tcl
 
-You may want to check the synthesis report at this point, at FullToyProjV9/HLS/processADir/solution1/syn/report/processA_csynth.rpt to make sure your changes didn't break timing, pipelining, or dramatically change resources usage, unless you anticipate that happening.
+You may want to check the synthesis report at this point, at 
+
+FullToyProjV9/HLS/processADir/solution1/syn/report/processA_csynth.rpt
+
+to make sure your changes didn't break timing, pipelining, or dramatically change resources usage, unless you anticipate that happening.
 
 * cd ../../FullToyProjV9/sourceFiles/processA
 * rm -rf *
