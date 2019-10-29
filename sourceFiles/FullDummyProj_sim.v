@@ -11,13 +11,10 @@ reg reset;
 initial begin
   reset = 1'b1;
   clk   = 1'b1;
-//  #100; // wait 100ns for global reset to finish
 end
 
 // Reset
 initial begin
-//  #230
-//  reset = 1'b1;
   #155
   reset = 1'b0;
 end
@@ -34,30 +31,11 @@ always begin
   #2.5 clk = ~clk; // 200 MHz clock
 end
 
-// BX
-//reg new_BX;
-//initial begin
-//  #240
-//  new_BX = 1'b0;
-//end
-//always begin
-//    #75 new_BX = ~new_BX;
-//    #5 new_BX = ~new_BX;
-//end
 reg [1:0] bx_in;
 initial bx_in = 2'b10;
 always begin
   #80 bx_in <= bx_in + 1'b1; // bx driver
 end
-//initial begin
-//  #150
-//  bx_in = 2'b00;
-//end
-//always @ (posedge clk) begin
-//    if (new_BX) begin
-//        bx_in <= bx_in + 1'b1;
-//    end
-//end
 wire bx_out;
 
 // mem1_BRAM signals
@@ -100,29 +78,63 @@ wire memout_wea;
 wire memout_enb;
 
 // Instantiate all BRAMs
-blk_mem_gen_mem1 mem1_BRAM (
-  .clka(clk),
-  .addra(mem1_writeaddr),
-  .dina(mem1_din),
-  .ena(mem1_ena),
-  .wea(mem1_wea),
-  .clkb(clk),
-  .addrb(mem1_readaddr),
-  .doutb(mem1_dout),
-  .enb(mem1_enb)
+Memory #(
+    .RAM_WIDTH(32),
+    .RAM_DEPTH(32),
+    .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
+    .HEX(0),
+    .INIT_FILE("/mnt/scratch/djc448/firmware-tests/FullToyProjV9/sourceFiles/fives.dat")
+    ) mem1_BRAM (
+    .clka(clk),
+    .addra(mem1_writeaddr),
+    .dina(mem1_din),
+    .wea(mem1_wea),
+    .clkb(clk),
+    .addrb(mem1_readaddr),
+    .doutb(mem1_dout),
+    .enb(mem1_enb),
+    .regceb(1'b1)
 );
+//blk_mem_gen_mem1 mem1_BRAM (
+//  .clka(clk),
+//  .addra(mem1_writeaddr),
+//  .dina(mem1_din),
+//  .ena(mem1_ena),
+//  .wea(mem1_wea),
+//  .clkb(clk),
+//  .addrb(mem1_readaddr),
+//  .doutb(mem1_dout),
+//  .enb(mem1_enb)
+//);
 
-blk_mem_gen_mem2 mem2_BRAM (
-  .clka(clk),
-  .addra(mem2_writeaddr),
-  .dina(mem2_din),
-  .ena(mem2_ena),
-  .wea(mem2_wea),
-  .clkb(clk),
-  .addrb(mem2_readaddr),
-  .doutb(mem2_dout),
-  .enb(mem2_enb)
+Memory #(
+    .RAM_WIDTH(32),
+    .RAM_DEPTH(32),
+    .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
+    .HEX(0),
+    .INIT_FILE("/mnt/scratch/djc448/firmware-tests/FullToyProjV9/sourceFiles/sevens.dat")
+    ) mem2_BRAM (
+    .clka(clk),
+    .addra(mem2_writeaddr),
+    .dina(mem2_din),
+    .wea(mem2_wea),
+    .clkb(clk),
+    .addrb(mem2_readaddr),
+    .doutb(mem2_dout),
+    .enb(mem2_enb),
+    .regceb(1'b1)
 );
+//blk_mem_gen_mem2 mem2_BRAM (
+//  .clka(clk),
+//  .addra(mem2_writeaddr),
+//  .dina(mem2_din),
+//  .ena(mem2_ena),
+//  .wea(mem2_wea),
+//  .clkb(clk),
+//  .addrb(mem2_readaddr),
+//  .doutb(mem2_dout),
+//  .enb(mem2_enb)
+//);
 
 blk_mem_gen_2page memout_BRAM (
   .clka(clk),

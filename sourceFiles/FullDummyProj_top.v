@@ -65,41 +65,92 @@ always @(processB_done) begin
 end
 
 // Instantiate all BRAMs
-blk_mem_gen_2page memAB_BRAM (
-  .clka(clk),
-  .addra(memAB_writeaddr),
-  .dina(memAB_din),
-  .ena(memAB_ena),
-  .wea(memAB_wea),
-  .clkb(clk),
-  .addrb(memAB_readaddr),
-  .doutb(memAB_dout),
-  .enb(memAB_enb)
+Memory #(
+    .RAM_WIDTH(32),
+    .RAM_DEPTH(32),
+    .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
+    .HEX(0),
+    .INIT_FILE("")
+    ) memAB_BRAM (
+    .clka(clk),
+    .addra(memAB_writeaddr),
+    .dina(memAB_din),
+    .wea(memAB_wea),
+    .clkb(clk),
+    .addrb(memAB_readaddr),
+    .doutb(memAB_dout),
+    .enb(memAB_enb),
+    .regceb(1'b1)
 );
+//blk_mem_gen_2page memAB_BRAM (
+//  .clka(clk),
+//  .addra(memAB_writeaddr),
+//  .dina(memAB_din),
+//  .ena(memAB_ena),
+//  .wea(memAB_wea),
+//  .clkb(clk),
+//  .addrb(memAB_readaddr),
+//  .doutb(memAB_dout),
+//  .enb(memAB_enb)
+//);
 
-blk_mem_gen_4page memAC_BRAM (
-  .clka(clk),
-  .addra(memAC_writeaddr),
-  .dina(memAC_din),
-  .ena(memAC_ena),
-  .wea(memAC_wea),
-  .clkb(clk),
-  .addrb(memAC_readaddr),
-  .doutb(memAC_dout),
-  .enb(memAC_enb)
+Memory #(
+    .RAM_WIDTH(32),
+    .RAM_DEPTH(64),
+    .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
+    .HEX(0),
+    .INIT_FILE("")
+    ) memAC_BRAM (
+    .clka(clk),
+    .addra(memAC_writeaddr),
+    .dina(memAC_din),
+    .wea(memAC_wea),
+    .clkb(clk),
+    .addrb(memAC_readaddr),
+    .doutb(memAC_dout),
+    .enb(memAC_enb),
+    .regceb(1'b1)
 );
+//blk_mem_gen_4page memAC_BRAM (
+//  .clka(clk),
+//  .addra(memAC_writeaddr),
+//  .dina(memAC_din),
+//  .ena(memAC_ena),
+//  .wea(memAC_wea),
+//  .clkb(clk),
+//  .addrb(memAC_readaddr),
+//  .doutb(memAC_dout),
+//  .enb(memAC_enb)
+//);
 
-blk_mem_gen_2page memBC_BRAM (
-  .clka(clk),
-  .addra(memBC_writeaddr),
-  .dina(memBC_din),
-  .ena(memBC_ena),
-  .wea(memBC_wea),
-  .clkb(clk),
-  .addrb(memBC_readaddr),
-  .doutb(memBC_dout),
-  .enb(memBC_enb)
+Memory #(
+    .RAM_WIDTH(32),
+    .RAM_DEPTH(32),
+    .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
+    .HEX(0),
+    .INIT_FILE("")
+    ) memBC_BRAM (
+    .clka(clk),
+    .addra(memBC_writeaddr),
+    .dina(memBC_din),
+    .wea(memBC_wea),
+    .clkb(clk),
+    .addrb(memBC_readaddr),
+    .doutb(memBC_dout),
+    .enb(memBC_enb),
+    .regceb(1'b1)
 );
+//blk_mem_gen_2page memBC_BRAM (
+//  .clka(clk),
+//  .addra(memBC_writeaddr),
+//  .dina(memBC_din),
+//  .ena(memBC_ena),
+//  .wea(memBC_wea),
+//  .clkb(clk),
+//  .addrb(memBC_readaddr),
+//  .doutb(memBC_dout),
+//  .enb(memBC_enb)
+//);
 
 // Internal BX signals
 wire[1:0] bx_out_A;
