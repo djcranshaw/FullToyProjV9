@@ -6,11 +6,13 @@ module FullDummyProject_sim();
 
 reg clk;
 reg reset;
+reg re_feed;
 
 // Initialize
 initial begin
-  reset = 1'b1;
-  clk   = 1'b1;
+  reset   = 1'b1;
+  re_feed = 1'b1;
+  clk     = 1'b1;
 end
 
 // Reset
@@ -18,12 +20,19 @@ initial begin
   #155
   reset = 1'b0;
 end
+initial begin
+  #145
+  re_feed = 1'b0;
+end
 
 // Enable processing
 reg en_proc = 1'b0;
+reg en_feed = 1'b0;
 always @(posedge clk) begin
   if (reset) en_proc = 1'b0;
   else       en_proc = 1'b1;
+  if (re_feed) en_feed = 1'b0;
+  else         en_feed = 1'b1;
 end
 
 // Stimulus
@@ -38,21 +47,122 @@ always begin
 end
 wire bx_out;
 
+// mem1master_BRAM signals
+reg[31:0] mem1master_din;
+wire[31:0] mem1master_dout;
+wire[5:0] mem1master_readaddr;
+reg[5:0] mem1master_writeaddr;
+reg mem1master_ena;
+reg mem1master_wea;
+reg mem1master_enb;
+
+initial begin
+//  mem1master_writeaddr = 0;
+  mem1master_ena = 1'b1;
+  mem1master_wea = 1'b0;
+  mem1master_enb = 1'b1;
+end
+
 // mem1_BRAM signals
-reg[31:0] mem1_din;
+wire[31:0] mem1_din;
 wire[31:0] mem1_dout;
 wire[4:0] mem1_readaddr;
-reg[4:0] mem1_writeaddr;
+wire[4:0] mem1_writeaddr;
 reg mem1_ena;
 reg mem1_wea;
 wire mem1_enb;
 
 initial begin
-  mem1_writeaddr = 0;
+//  mem1_writeaddr = 0;
   mem1_ena = 1'b1;
-  mem1_wea = 1'b0;
+  mem1_wea = 1'b1;
 end
 
+Memory #(
+    .RAM_WIDTH(32),
+    .RAM_DEPTH(64),
+    .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
+    .HEX(0),
+    .INIT_FILE("/mnt/scratch/djc448/firmware-tests/FullToyProjV9/sourceFiles/fives.dat")
+    ) mem1master_BRAM (
+    .clka(clk),
+    .addra(mem1master_writeaddr),
+    .dina(mem1master_din),
+    .wea(mem1master_wea),
+    .clkb(clk),
+    .addrb(mem1master_readaddr),
+    .doutb(mem1master_dout),
+    .enb(mem1master_enb),
+    .regceb(1'b1)
+);
+
+Feeder mem1feed (
+    .clk(clk),
+    .en_proc(en_feed),
+    .memmaster_address0(mem1master_readaddr),
+    .memmaster_q0(mem1master_dout),
+    .mem_address0(mem1_writeaddr),
+    .mem_d0(mem1_din)    
+);
+
+// mem2master_BRAM signals
+reg[31:0] mem2master_din;
+wire[31:0] mem2master_dout;
+wire[5:0] mem2master_readaddr;
+reg[5:0] mem2master_writeaddr;
+reg mem2master_ena;
+reg mem2master_wea;
+reg mem2master_enb;
+
+initial begin
+//  mem2master_writeaddr = 0;
+  mem2master_ena = 1'b1;
+  mem2master_wea = 1'b0;
+  mem2master_enb = 1'b1;
+end
+
+// mem2_BRAM signals
+wire[31:0] mem2_din;
+wire[31:0] mem2_dout;
+wire[4:0] mem2_readaddr;
+wire[4:0] mem2_writeaddr;
+reg mem2_ena;
+reg mem2_wea;
+wire mem2_enb;
+
+initial begin
+//  mem2_writeaddr = 0;
+  mem2_ena = 1'b1;
+  mem2_wea = 1'b1;
+end
+
+Memory #(
+    .RAM_WIDTH(32),
+    .RAM_DEPTH(64),
+    .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
+    .HEX(0),
+    .INIT_FILE("/mnt/scratch/djc448/firmware-tests/FullToyProjV9/sourceFiles/sevens.dat")
+    ) mem2master_BRAM (
+    .clka(clk),
+    .addra(mem2master_writeaddr),
+    .dina(mem2master_din),
+    .wea(mem2master_wea),
+    .clkb(clk),
+    .addrb(mem2master_readaddr),
+    .doutb(mem2master_dout),
+    .enb(mem2master_enb),
+    .regceb(1'b1)
+);
+
+Feeder mem2feed (
+    .clk(clk),
+    .en_proc(en_feed),
+    .memmaster_address0(mem2master_readaddr),
+    .memmaster_q0(mem2master_dout),
+    .mem_address0(mem2_writeaddr),
+    .mem_d0(mem2_din)
+);
+/*
 // mem2_BRAM signals
 reg[31:0] mem2_din;
 wire[31:0] mem2_dout;
@@ -67,7 +177,7 @@ initial begin
   mem2_ena = 1'b1;
   mem2_wea = 1'b0;
 end
-
+*/
 //memout_BRAM signals
 wire[31:0] memout_din;
 wire[31:0] memout_dout;
@@ -77,13 +187,14 @@ wire memout_ena;
 wire memout_wea;
 wire memout_enb;
 
+
 // Instantiate all BRAMs
 Memory #(
     .RAM_WIDTH(32),
     .RAM_DEPTH(32),
     .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
     .HEX(0),
-    .INIT_FILE("/mnt/scratch/djc448/firmware-tests/FullToyProjV9/sourceFiles/fives.dat")
+    .INIT_FILE("")
     ) mem1_BRAM (
     .clka(clk),
     .addra(mem1_writeaddr),
@@ -112,7 +223,7 @@ Memory #(
     .RAM_DEPTH(32),
     .RAM_PERFORMANCE("HIGH_PERFORMANCE"),
     .HEX(0),
-    .INIT_FILE("/mnt/scratch/djc448/firmware-tests/FullToyProjV9/sourceFiles/sevens.dat")
+    .INIT_FILE("")
     ) mem2_BRAM (
     .clka(clk),
     .addra(mem2_writeaddr),
